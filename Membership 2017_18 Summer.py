@@ -24,7 +24,9 @@ ind_cols = ['First_Name',
             'Gender', 'Ind_MembershipType', 'Ind_MembershipType_1'
             'CCC_Membership_Status', 'CCC_Membership']
 
-df.loc[:, "age"] = ((df.Created - df.Birth_Date) /
+year_start = pd.to_datetime('July 1, 2017')
+
+df.loc[:, "age"] = ((year_start - df.Birth_Date) /
                     timedelta(days=365.25)).astype(int)
 
 

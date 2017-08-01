@@ -96,4 +96,4 @@ names_df = sum2_df[['First_Name','LastName','Email']]
 m_df = df2.merge(names_df, on=['First_Name','LastName','Email'], how='outer')
 # m_df[['First_Name','LastName','Email','Created']].sort_values('LastName')
 
-print(", ".join(m_df.loc[ m_df.Created.isnull(), 'Email'][:-1]))
+print(",\n".join(m_df.loc[ m_df.Created.isnull(), 'Email'][:-1]))

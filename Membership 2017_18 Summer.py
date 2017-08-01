@@ -7,7 +7,7 @@ with open("ENSC_url.txt") as fn:
 import pandas as pd
 from datetime import timedelta
 
-# skipfooter because last line is a summary
+# skipfooter because last line is a summary  
 df = pd.read_csv(url, sep='\t', parse_dates=[
                  'Created', 'Birth Date'], skipfooter=1, engine='python')
 

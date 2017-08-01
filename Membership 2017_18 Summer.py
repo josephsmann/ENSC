@@ -1,14 +1,16 @@
 
 url = ""
 with open("ENSC_url.txt") as fn:
-    url = fn.readline().strip()
-    print(url)
+    summermembership_url = fn.readline().strip()
+    summerclass_url = fn.readline().strip()
+    print(summermembership_url)
+    print(summerclass_url)
 
 import pandas as pd
 from datetime import timedelta
 
-# skipfooter because last line is a summary  
-df = pd.read_csv(url, sep='\t', parse_dates=[
+# skipfooter because last line is a summary
+df = pd.read_csv(summermembership_url, sep='\t', parse_dates=[
                  'Created', 'Birth Date'], skipfooter=1, engine='python')
 
 # clean up column names
@@ -81,3 +83,17 @@ df2.loc[:, 'ENSC_total'] = df2.ENSC_OnlineRegFee + df2.ENSC_subtotal
 
 
 (df2.ENSC_total == df2.CartTotal).all()
+
+#  compare summer membership form entries with summer class entries
+sum2_df = pd.read_csv(
+    summerclass_url,
+    delimiter='\t',
+    parse_dates=['Created','Birth Date'])
+sum2_df.columns = [ c.replace(' ','_').replace('.','_').replace('/','_') for c in sum2_df.columns]
+names_df = sum2_df[['First_Name','LastName','Email']]
+
+# do an outer merge (not join!)
+m_df = df2.merge(names_df, on=['First_Name','LastName','Email'], how='outer')
+# m_df[['First_Name','LastName','Email','Created']].sort_values('LastName')
+
+print(", ".join(m_df.loc[ m_df.Created.isnull(), 'Email'][:-1]))
